@@ -45,7 +45,7 @@ def delete_blog(id:int, author_id:int,db:Session):
     if not blog_in_db.first():
         return {"error":f"записи с id {id} не существует"}
     if blog_in_db.first().author_id != author_id:
-        return {"error": f"У вас нет прав на удаление записи ID {blog_in_db.id}"}
+        return {"error": f"У вас нет прав на удаление записи ID {id}"}
     blog_in_db.delete()
     db.commit()
     return {"msg":f"deleted blog with id {id}"}

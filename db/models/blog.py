@@ -6,11 +6,11 @@ from db.base import Base
 
 
 class Blog(Base):
-    id = Column(GUID, primary_key=True)
+    id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     slug = Column(String, nullable=False)
     content = Column(Text, nullable=False)
-    author_id = Column(GUID, ForeignKey('user.id'), nullable=False)
+    author_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     author = relationship('User', back_populates='blogs')
     created_at = Column(DateTime, nullable=False, default=datetime.now)
     updated_at = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)

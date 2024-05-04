@@ -1,8 +1,8 @@
-"""fist commit
+"""create user and blog update to integer
 
-Revision ID: 466278fb1dfd
+Revision ID: a1854d6b5770
 Revises: 
-Create Date: 2024-05-02 12:41:18.922648
+Create Date: 2024-05-03 21:58:08.030854
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '466278fb1dfd'
+revision: str = 'a1854d6b5770'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

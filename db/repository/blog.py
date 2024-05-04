@@ -1,11 +1,39 @@
 from sqlalchemy.orm import Session
-from schemas.blog import CreateBlog
+from schemas.blog import CreateBlog, UpdateBlog
 from db.models.blog import Blog
 import uuid
 
-def create_new_blog(db: Session, blog: CreateBlog, author_id:uuid = 'b8ba6a5c-9dc9-4357-bf36-aeb87d30c4f7') -> Blog:
-    blog = Blog(**blog.dict(), author_id=author_id)
+
+def create_new_blog(db: Session, blog: CreateBlog, author_id: int = 1) -> Blog:
+    blog = Blog(
+        title=blog.title,
+        slug=blog.slug,
+        content=blog.content,
+        author_id=author_id,
+        )
     db.add(blog)
     db.commit()
     db.refresh(blog)
     return blog
+
+
+def retrieve_blog(db: Session, blog_id: int) -> Blog:
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+    return blog
+
+
+def list_blogs(db: Session) -> list[Blog]:
+    blogs = db.query(Blog).filter(Blog.is_active == True).all()
+    return blogs
+
+
+def update_blog(id:int, blog: UpdateBlog, author_id: int, db: Session):
+    blog_in_db = db.query(Blog).filter(Blog.id == id).first()
+    if not blog_in_db:
+        return
+    blog_in_db.title = blog.title
+    blog_in_db.content = blog.content
+    db.add(blog_in_db)
+    db.commit()
+    return blog_in_db
+

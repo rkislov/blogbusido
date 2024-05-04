@@ -6,7 +6,6 @@ from uuid import uuid4, UUID
 
 
 class CreateBlog(BaseModel):
-    id: UUID=uuid4()
     title: str
     slug: str
     content: Optional[str] = None
@@ -19,9 +18,14 @@ class CreateBlog(BaseModel):
 
 
 class ShowBlog(BaseModel):
+    id: str
     title: str
     content: Optional[str]
     created_at: date
 
     class Config:
         orm_mode = True
+
+
+class UpdateBlog(CreateBlog):
+    pass

@@ -8,7 +8,6 @@ from uuid import uuid4
 
 def create_new_user(db: Session, user: UserCreate) -> User:
     user = User(
-        id=uuid4(),
         email=user.email,
         password=Hasher.get_password_hash(user.password),
         is_active=True,

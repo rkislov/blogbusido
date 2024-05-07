@@ -9,6 +9,7 @@ from db.repository.login import get_user
 from core.security import create_access_token
 from jose import jwt, JWTError
 from core.config import settings
+from db.models.user import User
 
 router = APIRouter()
 
@@ -58,3 +59,22 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception
     return user
 
+
+@router.get("/users/me")
+async def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Не могу проверить данные",
+    )
+
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    user = get_user(email=username, db=db)
+    if user is None:
+        raise credentials_exception
+    return user

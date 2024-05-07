@@ -1,7 +1,6 @@
 from db.base import Base
 from sqlalchemy import Column, Integer, String, Boolean
-from fastapi_utils.guid_type import GUID
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 
 
 class User(Base):
@@ -13,3 +12,7 @@ class User(Base):
     is_superuser = Column(Boolean, nullable=False, default=False)
     is_active = Column(Boolean, nullable=False, default=True)
     blogs = relationship("Blog", back_populates="author")
+    files = relationship("File", back_populates="author")
+
+    def __str__(self):
+        return self.email

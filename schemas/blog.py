@@ -1,16 +1,17 @@
 from typing import Optional
-from pydantic import BaseModel, root_validator
-from datetime import date
+from pydantic import BaseModel, model_validator
+from datetime import datetime
 from slugify import slugify
-from uuid import uuid4, UUID
+from schemas.user import ShowUser
+from schemas.file import ShowFile, CreateFile
 
 
 class CreateBlog(BaseModel):
     title: str
-    slug: str
+    slug: Optional[str] = None
     content: Optional[str] = None
 
-    @root_validator(pre=True)
+    @model_validator(mode='before')
     def validate_slug(cls, values):
         if 'title' in values:
             values['slug'] = slugify(values.get('title'))
@@ -18,10 +19,12 @@ class CreateBlog(BaseModel):
 
 
 class ShowBlog(BaseModel):
-    id: str
+    id: int
     title: str
     content: Optional[str]
-    created_at: date
+    created_at: datetime
+    author: ShowUser
+    files: list[ShowFile]
 
     class Config:
         orm_mode = True

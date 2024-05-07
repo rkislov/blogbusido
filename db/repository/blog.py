@@ -1,10 +1,9 @@
 from sqlalchemy.orm import Session
 from schemas.blog import CreateBlog, UpdateBlog
 from db.models.blog import Blog
-import uuid
 
 
-def create_new_blog(db: Session, blog: CreateBlog, author_id: int = 1) -> Blog:
+def create_new_blog(db: Session, blog: CreateBlog, file, author_id: int) -> Blog:
     blog = Blog(
         title=blog.title,
         slug=blog.slug,
@@ -40,7 +39,7 @@ def update_blog(id:int, blog: UpdateBlog, author_id: int, db: Session):
     return blog_in_db
 
 
-def delete_blog(id:int, author_id:int,db:Session):
+def delete_blog(id: int, author_id: int, db: Session):
     blog_in_db = db.query(Blog).filter(Blog.id == id)
     if not blog_in_db.first():
         return {"error":f"записи с id {id} не существует"}
